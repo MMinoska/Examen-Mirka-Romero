@@ -23,22 +23,23 @@
     <title>Generar Token</title>
     <h1>Token Generado</h1>
 </head>
-<!-- <body onload="conteo();"> -->
 <body>
-    <div name="number"></div>
+    <div id="number"></div>
     <script type="text/javascript">
-        console.log("hola")
-        aleatorio = Math.round(Math.random()*999999);
-        console.log(aleatorio)
-        document.getElementsByName('number').innerHTML = aleatorio;
-   
-        
-        setInterval(function(){
-            aleatorio = Math.round(Math.random()*999999);
-            console.log(aleatorio)
-            document.getElementsByName('number').innerHTML = aleatorio;
-        },15000);
-        
+        fetch('http://localhost:4000/random')
+        .then(response => response.json())
+        .then(data => window.document.getElementById("number").innerHTML=data.status)
+        var intervalID2 = setInterval(function() {    
+        fetch('http://localhost:4000/bloquear')
+        .then(response => response.json())
+        .then(data => window.document.getElementById("number").innerHTML=data.status)   
+        }, 20000);
+        var intervalID = setInterval(function() {    
+        fetch('http://localhost:4000/random')
+        .then(response => response.json())
+        .then(data => window.document.getElementById("number").innerHTML=data.status)   
+        }, 20000);
+            
     </script>
 </body>
 

@@ -61,20 +61,28 @@ router.get("/", function (request, response) {
 
 router.get("/generando", function (request, response) {
   response.sendFile('C:/xampp/htdocs/ExamenTIA/src/html/generar.html');
-  console.log(document.getElementsByName("number"));
-  // console.log(document)
-  // setInterval(function(){
-  //   console.log("adentro ")
-  //     var firstname = document.getElementById("number");
-  //     console.log(firstname)
-
-  // },1000);
   
 });
 
+router.get("/random", async (req,res) =>{
+  let aleatorio = Math.round(Math.random()*999999);
+  var sql = "INSERT INTO generar (cliente, token,estado) VALUES ('012902', "+aleatorio +",'activo')";
+
+  mysqlConnection.query(sql);
+  let data = {
+      status: aleatorio,
+   };
+  res.json(data);
+});
+
+router.get("/bloquear", async (req,res) =>{
+  var modificar = "UPDATE generar SET estado = 'bloqueado' WHERE estado='activo'"
+  mysqlConnection.query(modificar);
+});
 
 router.post('/ingreso', (request, response) => {
   const {token}  = request.query;
+  console.log(token)
   mysqlConnection.query("SELECT * FROM generar WHERE token = ? and estado= 'activo' ", token, (err, rows, fields) => {
     console.log(rows.length);
     if (rows.length != 0 ) {
